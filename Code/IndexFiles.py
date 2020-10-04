@@ -25,6 +25,7 @@ from elasticsearch import Elasticsearch
 from elasticsearch.helpers import bulk
 from elasticsearch.exceptions import NotFoundError
 from elasticsearch_dsl import Index
+from Clean import Clean_novels as CN
 import argparse
 import os
 import codecs
@@ -69,8 +70,10 @@ if __name__ == '__main__':
         text = ''
         for line in ftxt:
             text += line
+        
+        cl = CN(text)
         # Insert operation for a document with fields' path' and 'text'
-        ldocs.append({'_op_type': 'index', '_index': index, 'path': f, 'text': text})
+        ldocs.append({'_op_type': 'index', '_index': index, 'path': f, 'text': cl.clean()})
 
     # Working with ElasticSearch
     client = Elasticsearch()

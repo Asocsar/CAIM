@@ -7,6 +7,7 @@ class Clean_novels:
 
     def clean(self):
         self.text = self.text.replace('_', '')
+        return self.text
 
 class Clean_news:
 

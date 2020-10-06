@@ -62,7 +62,7 @@ def indexTree(obj, lfiles):
 
 		# Insert operation for a document with fields' path' and 'text'
 		ldocs.append({'_op_type': 'index', '_index': index, 'path': f, 'text': obj(text).clean()})
-		return ldocs
+	return ldocs
 
 
 if __name__ == '__main__':
@@ -84,7 +84,7 @@ if __name__ == '__main__':
 		obj = News
 	elif index == "novels":
 		obj = Novels
-	ldocs = indexTree(obj,lfiles)
+	ldocs = indexTree(obj, lfiles)
 	# Working with ElasticSearch
 	client = Elasticsearch()
 	try:

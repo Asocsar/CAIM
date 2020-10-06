@@ -54,9 +54,9 @@ if __name__ == '__main__':
             lpal.append((v.encode("utf-8", "ignore"), voc[v]))
 
 
-        datos = {}
+        datos = []
         for pal, cnt in sorted(lpal, key=lambda x: x[0 if args.alpha else 1]):
-            datos[pal.decode("utf-8")] = cnt 
+            datos.append(([pal.decode("utf-8")], cnt)) 
             print(f'{cnt}, {pal.decode("utf-8")}')
         print('--------------------')
         print(f'{len(lpal)} Words')

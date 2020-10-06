@@ -6,8 +6,18 @@ class Clean_novels:
         self.text = text
 
     def clean(self):
-        self.text = self.text.replace('_', '')
-        return self.text
+        texto_entrada = self.text
+
+        texto_entrada = texto_entrada.replace('_', '')
+        texto_entrada = texto_entrada.replace('Ô', '')
+
+        texto_splited = texto_entrada.split(' ')
+        texto_splited = list(filter(lambda x: len(x) > 1 or x.upper() == 'I', texto_splited))
+        texto_splited = ' '.join(filter(lambda x: len(x) == len([s for s in x if s.isalpha()]) , texto_splited))
+        
+
+
+        return texto_splited
 
 class Clean_news:
 

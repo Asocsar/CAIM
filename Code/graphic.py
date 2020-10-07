@@ -1,4 +1,10 @@
 import matplotlib.pyplot as plt
+from scipy.optimize import curve_fit
+import numpy as np
+
+def zips_func(rank, c, a , b):
+    return c/((rank+b)**a)
+
 
 def show(datos):
     frec = []
@@ -6,15 +12,14 @@ def show(datos):
         frec.append(frecu)
     rango = list(range(1, len(frec)+1))
     plt.plot(rango, frec, label="Data")
+
+    result, cov = curve_fit(f=zips_func, xdata=rango, ydata=frec, bounds=(-np.inf, np.inf), p0=[230000,1,1], method='lm')
+
+    plt.plot(zips_func(rango, *result), label= "Zips")
+
+
     plt.yscale("log")
     plt.xscale("log")
-
-    c = 10000
-    rank = rango[:]
-    b = 1
-    a = 30
-
-    plt.plot(rank, [c/((x+b)**a) for x in rank], label= "Zips")
     plt.legend()
 
 

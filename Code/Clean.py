@@ -1,6 +1,3 @@
-class Novels:
-	characters = set()
-
 import re 
 
 class Clean_novels:

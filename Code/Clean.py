@@ -23,9 +23,6 @@ class Clean_novels:
 
         texto_splited = ' '.join(list(texto_splited))
 
-        if "mustn't" in texto_splited:
-            print(texto_splited)
-
 
         return texto_splited
 

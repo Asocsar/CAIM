@@ -14,8 +14,20 @@ def noDigits(word: str) -> bool:
 			return False
 	return True
 
-def noRepeats(word: str) -> bool
+
+def noRepeating(word: str) -> bool:
+	char: chr = word[0]
+	count: int = 0
+	for c in word:
+		if c == char:
+			count += 1
+			if count >= 3:
+				return False
+		else:
+			char = c
+			count = 0
 	return True
+
 
 class News:
 
@@ -23,15 +35,16 @@ class News:
 		self.text = text
 
 	def clean(self) -> str:
-
 		filteredText = self.text.replace('_', ' ')
 		filteredText = filteredText.replace(':', '')
 		filteredText = filteredText.replace("n't", '')
 		filteredText = filteredText.replace("'", ' ')
 		filteredText = filteredText.replace('.', ' ').split()
-		filteredText = filter(lambda word: len(word) > 1 or word == "a" or word == "i" or word == "A" or word == "I")
-		filteredText = filter(noDigits, filteredText)
-		filteredText = filter(noRepeats, filteredText)
+		filteredText = list(filter(lambda word: len(word) > 1 or word == "a" or word == "i" or word == "A" or word == "I",
+															 filteredText))
+		filteredText = list(filter(noDigits, filteredText))
+		filteredText = list(filter(noRepeating, filteredText))
+		filteredText = list(filter(lambda w: w.isprintable(), filteredText))
 		self.text = ' '.join(filteredText)
 		return self.text
 

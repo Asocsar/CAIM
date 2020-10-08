@@ -20,7 +20,8 @@ CountWords
 from elasticsearch import Elasticsearch
 from elasticsearch.helpers import scan
 from elasticsearch.exceptions import NotFoundError, TransportError
-import graphic
+import zips
+import heaps
 import argparse
 
 __author__ = 'bejar'
@@ -63,4 +64,4 @@ if __name__ == '__main__':
     except NotFoundError:
         print(f'Index {index} does not exists')
     
-    graphic.show(datos)
+    zips.show(datos)

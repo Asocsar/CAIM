@@ -85,15 +85,51 @@ if __name__ == '__main__':
 	elif index == "novels":
 		obj = Novels
 	ldocs = indexTree(obj, lfiles)
+	#number of subindex
+	iterations = int(len(ldocs)/10)
+	nsub = [x for x in range(1, len(ldocs), iterations)]
+	print(nsub)
+	if iterations-1 not in nsub:
+		nsub += [iterations-1]
+
 	# Working with ElasticSearch
 	client = Elasticsearch()
+
+	#create subindices
+	sub_data = []
+	sub_ind = []
+	for i, selec in enumerate(nsub):
+		name = index + '_' + str(i)
+		all_sub_data = []
+		for j in range(0, selec):
+			data = ldocs[j].copy()
+			data['_index'] = name
+			all_sub_data.append(data)
+		
+		sub_data.append(all_sub_data)
+		try:
+			ind = Index(name, using=client)
+			ind.delete()
+			ind.settings(number_of_shards=1)
+			ind.create()
+			print('Indexing subindex', i)
+			bulk(client, sub_data[i])
+			
+		except NotFoundError:
+			print('created ', name)
+			ind.settings(number_of_shards=1)
+			ind.create()
+			print('Indexing subindex', i)
+			bulk(client, sub_data[i])
+
+	# then create it
 	try:
 		# Drop index if it exists
 		ind = Index(index, using=client)
 		ind.delete()
 	except NotFoundError:
 		pass
-	# then create it
+
 	ind.settings(number_of_shards=1)
 	ind.create()
 

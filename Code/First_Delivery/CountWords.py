@@ -34,7 +34,8 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     index = args.index
-    datos = []
+    datos_zips = []
+    datos_heaps = []
     
 
     i = -1
@@ -67,20 +68,22 @@ if __name__ == '__main__':
                 lpal.append((v.encode("utf-8", "ignore"), voc[v]))
 
 
-            local_data = []
+            local_data_zips = []
+            local_data_heaps = []
             sub_total = 0
             for pal, cnt in sorted(lpal, key=lambda x: x[0 if args.alpha else 1]):
-                local_data.append(([pal.decode("utf-8")], cnt))
+                local_data_zips.append(([pal.decode("utf-8")], cnt))
+                local_data_heaps.append(cnt)
                 if i == -1:
                     total += cnt
                 else:
                     sub_total += cnt
                 #print(f'{cnt}, {pal.decode("utf-8")}')
-            datos.append(local_data)
+            datos_zips.append(local_data_zips)
+            datos_heaps.append(local_data_heaps)
             #print('--------------------')
             #print(f'{len(lpal)} Words')
             i += 1
-            print(total, sub_total)
             if sub_total/total == 1:
                 print("Loaded all index")
                 break
@@ -90,5 +93,5 @@ if __name__ == '__main__':
             break
 
 
-    zips.show(datos[0])
-    #heaps.show(datos[1:])
+    zips.show(datos_zips[0])
+    heaps.show(datos_heaps[1:])

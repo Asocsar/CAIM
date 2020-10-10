@@ -92,7 +92,6 @@ if __name__ == '__main__':
 	nsub = [x for x in range(1, len(ldocs), iterations)]
 	if len(ldocs)-1 not in nsub:
 		nsub += [len(ldocs)-1]
-	print(nsub)
 	# Working with ElasticSearch
 	client = Elasticsearch()
 

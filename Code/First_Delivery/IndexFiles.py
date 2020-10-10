@@ -69,11 +69,13 @@ if __name__ == '__main__':
 	parser = argparse.ArgumentParser()
 	parser.add_argument('--path', required=True, default=None, help='Path to the files')
 	parser.add_argument('--index', required=True, default=None, help='Index for the files')
+	parser.add_argument('--sub_index', required=False, default=10, help='Number of subindex')
 
 	args = parser.parse_args()
 
 	path = args.path
 	index = args.index
+	sub_index = int(args.sub_index)
 
 	lfiles = generate_files_list(path)
 	print('Indexing %d files' % len(lfiles))
@@ -86,22 +88,21 @@ if __name__ == '__main__':
 		obj = Novels
 	ldocs = indexTree(obj, lfiles)
 	#number of subindex
-	iterations = int(len(ldocs)/10)
+	iterations = int(len(ldocs)/sub_index)
 	nsub = [x for x in range(1, len(ldocs), iterations)]
-	print(nsub)
-	if iterations-1 not in nsub:
-		nsub += [iterations-1]
-
+	if len(ldocs)-1 not in nsub:
+		nsub += [len(ldocs)-1]
 	# Working with ElasticSearch
 	client = Elasticsearch()
 
+
+
 	#create subindices
 	sub_data = []
-	sub_ind = []
 	for i, selec in enumerate(nsub):
 		name = index + '_' + str(i)
 		all_sub_data = []
-		for j in range(0, selec):
+		for j in range(0, selec+1):
 			data = ldocs[j].copy()
 			data['_index'] = name
 			all_sub_data.append(data)

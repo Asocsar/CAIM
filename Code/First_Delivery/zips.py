@@ -5,7 +5,7 @@ import numpy as np
 def zips_func(rank, c, a , b):
     return c/((rank+b)**a)
 
-def zips_law(frec):
+def zips_law(frec, index):
     rango = list(range(1, len(frec)+1))
     plt.plot(rango, frec, label="Data")
 
@@ -14,6 +14,7 @@ def zips_law(frec):
     plt.plot(zips_func(rango, *result), label= "Zips")
     
     plt.text(1, 1.0, "c = {}, a = {}, b = {}".format(*result), fontsize='x-small')
+    plt.title(index)
     plt.yscale("log")
     plt.xscale("log")
     plt.legend()
@@ -21,9 +22,9 @@ def zips_law(frec):
 
     plt.show()
 
-def show(datos):
+def show(datos, index):
     frec = []
     for (rank, (word,frecu)) in enumerate(datos[::-1]):
         frec.append(frecu) 
-    zips_law(frec)
+    zips_law(frec, index)
 

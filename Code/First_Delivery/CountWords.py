@@ -93,5 +93,5 @@ if __name__ == '__main__':
             break
 
 
-    zips.show(datos_zips[0])
-    heaps.show(datos_heaps[1:])
+    zips.show(datos_zips[0], index)
+    heaps.show(datos_heaps[1:], index)

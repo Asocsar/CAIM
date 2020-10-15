@@ -1,25 +1,4 @@
-"""
-.. module:: IndexFiles
 
-IndexFiles
-******
-
-:Description: IndexFiles
-
-    Indexes a set of files under the directory passed as a parameter (--path)
-    in the index name passed as a parameter (--index)
-
-    If the index exists it is dropped and created new
-
-    The documents are created with a 'path' and a 'text' fields
-
-:Authors:
-    bejar
-
-:Version: 
-
-:Date:  23/06/2017
-"""
 
 from elasticsearch import Elasticsearch
 from elasticsearch.helpers import bulk
@@ -30,7 +9,7 @@ import argparse
 import os
 import codecs
 
-__author__ = 'bejar'
+
 
 
 def generate_files_list(path):

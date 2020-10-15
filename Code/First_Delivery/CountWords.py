@@ -1,21 +1,4 @@
-"""
-.. module:: CountWords
 
-CountWords
-*************
-
-:Description: CountWords
-
-    Generates a list with the counts and the words in the 'text' field of the documents in an index
-
-:Authors: bejar
-    
-
-:Version: 
-
-:Created on: 04/07/2017 11:58 
-
-"""
 
 from elasticsearch import Elasticsearch
 from elasticsearch.helpers import scan
@@ -25,7 +8,6 @@ import heaps
 import argparse
 import numpy as np
 
-__author__ = 'bejar'
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()

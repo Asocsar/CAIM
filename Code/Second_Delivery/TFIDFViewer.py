@@ -36,6 +36,7 @@ def search_file_by_path(client, index, path):
     :return:
     """
     s = Search(using=client, index=index)
+
     q = Q('match', path=path)  # exact search in the path field
     s = s.query(q)
     result = s.execute()
@@ -88,11 +89,11 @@ def toTFIDF(client, index, file_id):
     dcount = doc_count(client, index)
 
     tfidfw = []
+
     for (t, w),(_, df) in zip(file_tv, file_df):
-        #
-        # Something happens here
-        #
-        pass
+        tf = w / max_freq
+        idf = np.log2(dcount/df)
+        tfidfw.append((t, tf*idf))
 
     return normalize(tfidfw)
 
@@ -105,7 +106,8 @@ def print_term_weigth_vector(twv):
     #
     # Program something here
     #
-    pass
+    for (t,w) in twv:
+        print(t, w)
 
 
 def normalize(tw):
@@ -115,10 +117,8 @@ def normalize(tw):
     :param tw:
     :return:
     """
-    #
-    # Program something here
-    #
-    return None
+    mod = np.sqrt(np.sum([x**2 for (_,x) in tw]))
+    return [(t,w/mod) for (t,w) in tw]
 
 
 def cosine_similarity(tw1, tw2):
@@ -128,10 +128,25 @@ def cosine_similarity(tw1, tw2):
     :param tw2:
     :return:
     """
-    #
-    # Program something here
-    #
-    return 0
+    
+    ind1 = 0
+    ind2 = 0
+    results = []
+    while ind1 < len(tw1) and ind2 < len(tw2):
+        (word1, w1) = tw1[ind1]
+        (word2, w2) = tw2[ind2]
+
+        if word1 == word2:
+            results.append(w1*w2)
+            ind1 += 1
+            ind2 += 1
+
+        elif word1 < word2:
+            ind1 += 1
+        else:
+            ind2 += 1
+
+    return np.sum(results)
 
 def doc_count(client, index):
     """
@@ -182,4 +197,3 @@ if __name__ == '__main__':
 
     except NotFoundError:
         print(f'Index {index} does not exists')
-

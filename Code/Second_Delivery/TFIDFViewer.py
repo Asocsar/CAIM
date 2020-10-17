@@ -191,7 +191,10 @@ if __name__ == '__main__':
     parser.add_argument('--files', default=None, required=False, nargs=2, help='Paths of the files to compare')
     parser.add_argument('--print', default=False, action='store_true', help='Print TFIDF vectors')
     parser.add_argument('--path_all_files', required=False,  help='Determines if compares all the files')
-    parser.add_argument('--stop', required=False,  help='Allows to stop the esecution preserving all the information analyzed')
+    parser.add_argument('--stop', default=False, action='store_true', required=False,  help='Allows to stop the esecution preserving all the information analyzed')
+
+    parser.add_argument('--iter', default=100, required=False,  help='The number of Iterations between showing the progress and stop if indicated')
+    parser.add_argument('--prog', default=0.02, required=False,  help='How has to increase the progress of the analysis in order to show the total progress and stop if indicated')
 
     args = parser.parse_args()
 
@@ -209,11 +212,15 @@ if __name__ == '__main__':
     else:
         all_results = []
         path = args.path_all_files
-        all_files = os.listdir(path)
+
+        all_files = []
+        for (_,_,filenames) in os.walk(path):
+            all_files += filenames
         file1 = 0
         file2 = 1
-        print("Press any key to Interrput the process")
-        print("Analizing all files...")
+        p_pre = 0
+        binom = np.math.factorial(len(all_files))/(np.math.factorial(len(all_files) - 2)*2)
+        print("Analizing {} files with {} possibilities...".format(len(all_files), binom ) )
         while file1 != file2:
             file1_path = path + '\\' + all_files[file1]
             file2_path = path + '\\' + all_files[file2]
@@ -224,21 +231,33 @@ if __name__ == '__main__':
             similarity = analyse_files(client, index, file1_path, file2_path, args.print)
             all_results.append((name_file1, name_file2, similarity))
             file2 += 1
+            if args.prog != None or file2 % int(args.iter) == 0:
+                p = (  np.round((file1*len(all_files) + file2), 2)  / binom )*50
+                diff = p - p_pre
+                cond = True
+                if args.prog != None:
+                    cond = diff > float(args.prog)
+
+                if cond:
+                    p_pre = p
+                    print("Progress", p, "%")
+                    if args.stop:
+                        print("Stop and print all processed information?  Yes/No")
+                        R = input()
+                        while R != "Yes" and R != "No":
+                            print("Introduce Correct Input Yes/No")
+                            R = input()
+                        if R == "Yes":
+                            break
             if len(all_files) == file2:
                 file1 += 1
-                print("Progress", int((file1/len(all_files))*10000)/100, "%")
-                if args.stop:
-                    print("Stop and print all processed information?  Yes/No")
-                    R = input()
-                    while R != "Yes" and R != "No":
-                        print("Introduce Correct Input Yes/No")
-                        R = input()
-                    if R == "Yes":
-                        break
                 file2 = file1
                 if file2 < len(all_files) - 1:
                     file2 += 1
 
-
+        print('Printing information in results.txt...')
+        fil = open("results_{}.txt".format(index), "w")
         for (f1, f2, sim) in sorted(all_results, key = lambda x : x[2], reverse=True):
-            print("Similarity between", f1, "and", f2, " --> ", sim, end='\n\n')
+           fil.write("Similarity between, {}, and, {},  -->  {}\n\n".format(f1,f2,sim))
+        fil.close()
+        print('Done')

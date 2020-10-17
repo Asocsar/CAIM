@@ -25,8 +25,8 @@ from elasticsearch_dsl.query import Q
 import argparse
 
 import numpy as np
-
-__author__ = 'bejar'
+import os
+import sys
 
 def search_file_by_path(client, index, path):
     """
@@ -159,22 +159,7 @@ def doc_count(client, index):
     return int(CatClient(client).count(index=[index], format='json')[0]['count'])
 
 
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--index', default=None, required=True, help='Index to search')
-    parser.add_argument('--files', default=None, required=True, nargs=2, help='Paths of the files to compare')
-    parser.add_argument('--print', default=False, action='store_true', help='Print TFIDF vectors')
-
-    args = parser.parse_args()
-
-
-    index = args.index
-
-    file1 = args.files[0]
-    file2 = args.files[1]
-
-    client = Elasticsearch()
-
+def analyse_files(client, index, file1, file2, print_args):
     try:
 
         # Get the files ids
@@ -185,7 +170,7 @@ if __name__ == '__main__':
         file1_tw = toTFIDF(client, index, file1_id)
         file2_tw = toTFIDF(client, index, file2_id)
 
-        if args.print:
+        if print_args:
             print(f'TFIDF FILE {file1}')
             print_term_weigth_vector(file1_tw)
             print ('---------------------')
@@ -193,7 +178,67 @@ if __name__ == '__main__':
             print_term_weigth_vector(file2_tw)
             print ('---------------------')
 
-        print(f"Similarity = {cosine_similarity(file1_tw, file2_tw):3.5f}")
+        # print(f"Similarity = {cosine_similarity(file1_tw, file2_tw):3.5f}")
+        return cosine_similarity(file1_tw, file2_tw)
 
     except NotFoundError:
         print(f'Index {index} does not exists')
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--index', default=None, required=True, help='Index to search')
+    parser.add_argument('--files', default=None, required=False, nargs=2, help='Paths of the files to compare')
+    parser.add_argument('--print', default=False, action='store_true', help='Print TFIDF vectors')
+    parser.add_argument('--path_all_files', required=False,  help='Determines if compares all the files')
+    parser.add_argument('--stop', required=False,  help='Allows to stop the esecution preserving all the information analyzed')
+
+    args = parser.parse_args()
+
+
+    index = args.index
+    client = Elasticsearch()
+
+    if args.files:
+        file1 = args.files[0]
+        file2 = args.files[1]
+
+        similarity = analyse_files(client, index, file1, file2, args.print)
+        print("Similarity between", file1.split('\\')[-1], "and", file2.split('\\')[-1], " --> ", similarity)
+    
+    else:
+        all_results = []
+        path = args.path_all_files
+        all_files = os.listdir(path)
+        file1 = 0
+        file2 = 1
+        print("Press any key to Interrput the process")
+        print("Analizing all files...")
+        while file1 != file2:
+            file1_path = path + '\\' + all_files[file1]
+            file2_path = path + '\\' + all_files[file2]
+
+            name_file1 = file1_path.split('\\')[-1]
+            name_file2 = file2_path.split('\\')[-1]
+
+            similarity = analyse_files(client, index, file1_path, file2_path, args.print)
+            all_results.append((name_file1, name_file2, similarity))
+            file2 += 1
+            if len(all_files) == file2:
+                file1 += 1
+                print("Progress", int((file1/len(all_files))*10000)/100, "%")
+                if args.stop:
+                    print("Stop and print all processed information?  Yes/No")
+                    R = input()
+                    while R != "Yes" and R != "No":
+                        print("Introduce Correct Input Yes/No")
+                        R = input()
+                    if R == "Yes":
+                        break
+                file2 = file1
+                if file2 < len(all_files) - 1:
+                    file2 += 1
+
+
+        for (f1, f2, sim) in sorted(all_results, key = lambda x : x[2], reverse=True):
+            print("Similarity between", f1, "and", f2, " --> ", sim, end='\n\n')

@@ -193,8 +193,8 @@ if __name__ == '__main__':
     parser.add_argument('--path_all_files', required=False,  help='Determines if compares all the files')
     parser.add_argument('--stop', default=False, action='store_true', required=False,  help='Allows to stop the esecution preserving all the information analyzed')
 
-    parser.add_argument('--iter', default=100, required=False,  help='The number of Iterations between showing the progress and stop if indicated')
-    parser.add_argument('--prog', default=0.02, required=False,  help='How has to increase the progress of the analysis in order to show the total progress and stop if indicated')
+    parser.add_argument('--iter', required=False,  help='The number of Iterations between showing the progress and stop if indicated')
+    parser.add_argument('--prog', required=False,  help='How has to increase the progress of the analysis in order to show the total progress and stop if indicated')
 
     args = parser.parse_args()
 
@@ -237,7 +237,6 @@ if __name__ == '__main__':
                 cond = True
                 if args.prog != None:
                     cond = diff > float(args.prog)
-
                 if cond:
                     p_pre = p
                     print("Progress", p, "%")

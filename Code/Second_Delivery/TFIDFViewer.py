@@ -198,6 +198,15 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
+    
+    if ((args.iter or not args.prog) and (not args.iter or args.prog)):
+        raise Exception( 
+            "usage: TFIDFViewer.py [-h] --index INDEX [--files FILES FILES] [--print] [--path_all_files PATH_ALL_FILES] [--stop] --iter ITER --prog PROG\n \
+             Indicate ITER or PROG values, only one of them" )
+
+
+
+
 
     index = args.index
     client = Elasticsearch()
@@ -209,7 +218,9 @@ if __name__ == '__main__':
         similarity = analyse_files(client, index, file1, file2, args.print)
         print("Similarity between", file1.split('\\')[-1], "and", file2.split('\\')[-1], " --> ", similarity)
     
-    else:
+    elif args.path_all_files:
+        
+
         all_results = []
         path = args.path_all_files
 
@@ -222,11 +233,11 @@ if __name__ == '__main__':
         binom = np.math.factorial(len(all_files))/(np.math.factorial(len(all_files) - 2)*2)
         print("Analizing {} files with {} possibilities...".format(len(all_files), binom ) )
         while file1 != file2:
-            file1_path = path + '\\' + all_files[file1]
-            file2_path = path + '\\' + all_files[file2]
+            file1_path = path + '/' + all_files[file1]
+            file2_path = path + '/' + all_files[file2]
 
-            name_file1 = file1_path.split('\\')[-1]
-            name_file2 = file2_path.split('\\')[-1]
+            name_file1 = file1_path.split('/')[-1]
+            name_file2 = file2_path.split('/')[-1]
 
             similarity = analyse_files(client, index, file1_path, file2_path, args.print)
             all_results.append((name_file1, name_file2, similarity))
@@ -260,3 +271,6 @@ if __name__ == '__main__':
            fil.write("Similarity between, {}, and, {},  -->  {}\n\n".format(f1,f2,sim))
         fil.close()
         print('Done')
+    
+    else:
+        print("Please indicate a path to two files or a folder for a set of files in order to be able to compare")

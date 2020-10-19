@@ -57,8 +57,7 @@ def generate_files_list(path):
 def generate_index(index, ldocs, token, filters, all_pos):
 
     if all_pos:
-        index = index + '_' + token + '_' + '_'.join([str(x) for x in filters])
-        print("generating_index", index)
+        print("GENERATING INDEX", index)
     client = Elasticsearch()
 
     # Tokenizers: whitespace classic standard letter
@@ -108,11 +107,11 @@ if __name__ == '__main__':
     parser.add_argument('--index', required=True, default=None, help='Index for the files')
     parser.add_argument('--token', default='standard', choices=['standard', 'whitespace', 'classic', 'letter'],
                         help='Text tokenizer')
+    parser.add_argument('--all_posibilities', required=False, default=False,  action='store_true', help='Generate all the possible combinations individuale and finally creates one\
+                                                                                                        with the size of each possibility')
     parser.add_argument('--filter', default=['lowercase'], nargs=argparse.REMAINDER, help='Text filter: lowercase, '
                                                                                           'asciifolding, stop, porter_stem, kstem, snowball')
 
-    parser.add_argument('--all_posibilities', required=False, default=False,  action='store_true', help='Generate all the possible combinations individuale and finally creates one\
-                                                                                                        with the size of each possibility')
     args = parser.parse_args()
 
     path = args.path
@@ -143,8 +142,13 @@ if __name__ == '__main__':
 
         for tok in ['standard', 'whitespace', 'classic', 'letter']:
             for filt_cant in range(1, len(all_filters)):
-                
-                generate_index(index, ldocs, tok, all_filters[:filt_cant], True)
+                index_in = index + '_' + tok + '_' + '_'.join([str(x) for x in all_filters[:filt_cant]])
+                generate_index(index_in, ldocs, tok, all_filters[:filt_cant], True)
+                print("END OF GENERATING INDEX", index_in)
+                time.sleep(10)
+                os.system('python .\CountWords.py --index {}'.format(index_in))
+                time.sleep(10)
+
     else:
         generate_index(index, ldocs, args.token, args.filter, False)
 

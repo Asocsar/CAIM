@@ -34,7 +34,7 @@ import argparse
 import os
 import codecs
 from elasticsearch_dsl import Index, analyzer, tokenizer
-
+import time
 
 def generate_files_list(path):
     """
@@ -54,49 +54,18 @@ def generate_files_list(path):
     return lfiles
 
 
-__author__ = 'bejar'
+def generate_index(index, ldocs, token, filters, all_pos):
 
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--path', required=True, default=None, help='Path to the files')
-    parser.add_argument('--index', required=True, default=None, help='Index for the files')
-    parser.add_argument('--token', default='standard', choices=['standard', 'whitespace', 'classic', 'letter'],
-                        help='Text tokenizer')
-    parser.add_argument('--filter', default=['lowercase'], nargs=argparse.REMAINDER, help='Text filter: lowercase, '
-                                                                                          'asciifolding, stop, porter_stem, kstem, snowball')
-
-    args = parser.parse_args()
-
-    path = args.path
-    index = args.index
-
-    # check if the filters are valid
-    for f in args.filter:
-        if f not in ['lowercase', 'asciifolding', 'stop', 'stemmer', 'porter_stem', 'kstem', 'snowball']:
-            raise NameError(
-                'Invalid filter must be a subset of: lowercase, asciifolding, stop, porter_stem, kstem, snowball')
-
-    ldocs = []
-
-    # Reads all the documents in a directory tree and generates an index operation for each
-    lfiles = generate_files_list(path)
-    print('Indexing %d files' % len(lfiles))
-    print('Reading files ...')
-    for f in lfiles:
-        ftxt = codecs.open(f, "r", encoding='iso-8859-1')
-        text = ''
-        for line in ftxt:
-            text += line
-        # Insert operation for a document with fields' path' and 'text'
-        ldocs.append({'_op_type': 'index', '_index': index, 'path': f, 'text': text})
-
+    if all_pos:
+        index = index + '_' + token + '_' + '_'.join([str(x) for x in filters])
+        print("generating_index", index)
     client = Elasticsearch()
 
     # Tokenizers: whitespace classic standard letter
     my_analyzer = analyzer('default',
                            type='custom',
-                           tokenizer=tokenizer(args.token),
-                           filter=args.filter
+                           tokenizer=tokenizer(token),
+                           filter=filters
                            )
 
     try:
@@ -129,3 +98,54 @@ if __name__ == '__main__':
     # Bulk execution of elastic search operations (faster than executing all one by one)
     print('Indexing ...')
     bulk(client, ldocs)
+    
+    
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--path', required=True, default=None, help='Path to the files')
+    parser.add_argument('--index', required=True, default=None, help='Index for the files')
+    parser.add_argument('--token', default='standard', choices=['standard', 'whitespace', 'classic', 'letter'],
+                        help='Text tokenizer')
+    parser.add_argument('--filter', default=['lowercase'], nargs=argparse.REMAINDER, help='Text filter: lowercase, '
+                                                                                          'asciifolding, stop, porter_stem, kstem, snowball')
+
+    parser.add_argument('--all_posibilities', required=False, default=False,  action='store_true', help='Generate all the possible combinations individuale and finally creates one\
+                                                                                                        with the size of each possibility')
+    args = parser.parse_args()
+
+    path = args.path
+    index = args.index
+
+    # check if the filters are valid
+    for f in args.filter:
+        if f not in ['lowercase', 'asciifolding', 'stop', 'stemmer', 'porter_stem', 'kstem', 'snowball']:
+            raise NameError(
+                'Invalid filter must be a subset of: lowercase, asciifolding, stop, porter_stem, kstem, snowball')
+    
+    ldocs = []
+
+    # Reads all the documents in a directory tree and generates an index operation for each
+    lfiles = generate_files_list(path)
+    print('Indexing %d files' % len(lfiles))
+    print('Reading files ...')
+    for f in lfiles:
+        ftxt = codecs.open(f, "r", encoding='iso-8859-1')
+        text = ''
+        for line in ftxt:
+            text += line
+        # Insert operation for a document with fields' path' and 'text'
+        ldocs.append({'_op_type': 'index', '_index': index, 'path': f, 'text': text})
+    
+    if args.all_posibilities:
+        all_filters = ['lowercase', 'asciifolding', 'stop', 'stemmer', 'porter_stem', 'kstem', 'snowball']
+
+        for tok in ['standard', 'whitespace', 'classic', 'letter']:
+            for filt_cant in range(1, len(all_filters)):
+                
+                generate_index(index, ldocs, tok, all_filters[:filt_cant], True)
+    else:
+        generate_index(index, ldocs, args.token, args.filter, False)
+
+

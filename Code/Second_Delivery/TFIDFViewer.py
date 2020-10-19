@@ -204,10 +204,6 @@ if __name__ == '__main__':
             "usage: TFIDFViewer.py [-h] --index INDEX [--files FILES FILES] [--print] [--path_all_files PATH_ALL_FILES] [--stop] --iter ITER --prog PROG\n \
              Indicate ITER or PROG values, only one of them" )
 
-
-
-
-
     index = args.index
     client = Elasticsearch()
 

@@ -21,10 +21,11 @@ from __future__ import print_function
 from elasticsearch import Elasticsearch
 from elasticsearch.helpers import scan
 from elasticsearch.exceptions import NotFoundError, TransportError
+import numpy as np
 
 import argparse
 
-def analyze_index(index):
+def analyze_index(index, alpha):
     print("ANALYZING INDEX", index)
     try:
         client = Elasticsearch()
@@ -49,7 +50,8 @@ def analyze_index(index):
 
         fil = open("countWords_{}.txt".format(index), "w")
         tot = open("countWords_all.txt", "a")
-        for pal, cnt in sorted(lpal, key=lambda x: x[0 if args.alpha else 1]):
+        maxima = open("countWords_max.txt", "a")
+        for pal, cnt in sorted(lpal, key=lambda x: x[0 if alpha else 1]):
             try:
                 fil.write("{}, {}\n".format(cnt, pal.decode("utf-8")))
                 #print(f'{cnt}, {pal.decode("utf-8")}')
@@ -58,7 +60,9 @@ def analyze_index(index):
         fil.write('\n--------------------\n')
         fil.write('{} Words\n'.format(len(lpal)))
         tot.write('{}, {} Words\n'.format(index, len(lpal)))
+        maxima.write('{}, {} Frec\n'.format(index, np.max([cnt for pal, cnt in sorted(lpal, key=lambda x: x[0 if alpha else 1])])))
         fil.close()
+        maxima.close()
         tot.close()
         print("END OF ANALYZING INDEX", index)
         # print(f'{len(lpal)} Words')
@@ -75,5 +79,5 @@ if __name__ == '__main__':
     index = args.index
     
 
-    analyze_index(index)
+    analyze_index(index, args.alpha)
 

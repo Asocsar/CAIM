@@ -34,7 +34,9 @@ import argparse
 import os
 import codecs
 from elasticsearch_dsl import Index, analyzer, tokenizer
-import time
+import CountWords
+import matplotlib.pyplot as plt
+import numpy as np
 
 def generate_files_list(path):
     """
@@ -57,7 +59,8 @@ def generate_files_list(path):
 def generate_index(index, ldocs, token, filters, all_pos):
 
     if all_pos:
-        print("GENERATING INDEX", index)
+        print("GENERATING INDEX...", index)
+    
     client = Elasticsearch()
 
     # Tokenizers: whitespace classic standard letter
@@ -97,9 +100,23 @@ def generate_index(index, ldocs, token, filters, all_pos):
     # Bulk execution of elastic search operations (faster than executing all one by one)
     print('Indexing ...')
     bulk(client, ldocs)
+    client.transport.close()
     
+    
+def plot_data(all_words_data, title):
+    type_an = np.array([x.split(',')[0] for x in all_words_data])
+    words_cant = np.array([int(x.split(',')[1].split(' ')[1]) for x in all_words_data])
+
     
 
+    fig, ax = plt.subplots(figsize=(16,6))
+    ax.set_title(title)
+    plt.yticks(fontsize='xx-small')
+    plt.xticks(rotation='vertical')
+    ax.barh(type_an, words_cant, color = ['gray' for _ in range(6)] + ['coral' for _ in range(6)] + 
+                                        ['mediumorchid' for _ in range(6)] + ['gold' for _ in range(6)])
+
+    plt.show() 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -139,15 +156,27 @@ if __name__ == '__main__':
     
     if args.all_posibilities:
         all_filters = ['lowercase', 'asciifolding', 'stop', 'stemmer', 'porter_stem', 'kstem', 'snowball']
-
         for tok in ['standard', 'whitespace', 'classic', 'letter']:
             for filt_cant in range(1, len(all_filters)):
                 index_in = index + '_' + tok + '_' + '_'.join([str(x) for x in all_filters[:filt_cant]])
-                generate_index(index_in, ldocs, tok, all_filters[:filt_cant], True)
-                print("END OF GENERATING INDEX", index_in)
-                time.sleep(10)
-                os.system('python .\CountWords.py --index {}'.format(index_in))
-                time.sleep(10)
+                ldocs_mod = [{'_op_type' : L['_op_type'], '_index': index_in, 'path': L['path'], 'text': L['text']} for L in ldocs]
+                generate_index(index_in, ldocs_mod, tok, all_filters[:filt_cant], True)
+                print("END OF GENERATING INDEX...", index_in)
+                CountWords.analyze_index(index_in, False)
+        
+        all_words = open('countWords_all.txt', 'r')
+        all_words_data = all_words.readlines()
+        all_words.close()
+
+        plot_data(all_words_data, "Number of words")
+
+        all_words = open('countWords_max.txt', 'r')
+        all_words_data = all_words.readlines()
+        all_words.close()
+        
+        plot_data(all_words_data, "MaximumFrec")
+        
+
 
     else:
         generate_index(index, ldocs, args.token, args.filter, False)

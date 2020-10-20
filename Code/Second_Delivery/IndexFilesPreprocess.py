@@ -113,8 +113,8 @@ def plot_data(all_words_data, title):
     ax.set_title(title)
     plt.yticks(fontsize='xx-small')
     plt.xticks(rotation='vertical')
-    ax.barh(type_an, words_cant, color = ['gray' for _ in range(6)] + ['coral' for _ in range(6)] + 
-                                        ['mediumorchid' for _ in range(6)] + ['gold' for _ in range(6)])
+    ax.barh(type_an, words_cant, color = ['gray' for _ in range(7)] + ['coral' for _ in range(7)] + 
+                                        ['mediumorchid' for _ in range(7)] + ['gold' for _ in range(7)])
 
     plt.show() 
 
@@ -157,10 +157,10 @@ if __name__ == '__main__':
     if args.all_posibilities:
         all_filters = ['lowercase', 'asciifolding', 'stop', 'stemmer', 'porter_stem', 'kstem', 'snowball']
         for tok in ['standard', 'whitespace', 'classic', 'letter']:
-            for filt_cant in range(1, len(all_filters)):
-                index_in = index + '_' + tok + '_' + '_'.join([str(x) for x in all_filters[:filt_cant]])
+            for filt_select in all_filters:
+                index_in = index + '_' + tok + '_' + filt_select
                 ldocs_mod = [{'_op_type' : L['_op_type'], '_index': index_in, 'path': L['path'], 'text': L['text']} for L in ldocs]
-                generate_index(index_in, ldocs_mod, tok, all_filters[:filt_cant], True)
+                generate_index(index_in, ldocs_mod, tok, filt_select, True)
                 print("END OF GENERATING INDEX...", index_in)
                 CountWords.analyze_index(index_in, False)
         

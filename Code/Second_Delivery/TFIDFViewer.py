@@ -199,10 +199,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     
-    if ((args.iter or not args.prog) and (not args.iter or args.prog)):
-        raise Exception( 
-            "usage: TFIDFViewer.py [-h] --index INDEX [--files FILES FILES] [--print] [--path_all_files PATH_ALL_FILES] [--stop] --iter ITER --prog PROG\n \
-             Indicate ITER or PROG values, only one of them" )
+
 
     index = args.index
     client = Elasticsearch()
@@ -216,6 +213,10 @@ if __name__ == '__main__':
     
     elif args.path_all_files:
         
+        if ((args.iter or not args.prog) and (not args.iter or args.prog)):
+            raise Exception( 
+                "usage: TFIDFViewer.py [-h] --index INDEX [--files FILES FILES] [--print] [--path_all_files PATH_ALL_FILES] [--stop] --iter ITER --prog PROG\n \
+                Indicate ITER or PROG values, only one of them" )
 
         all_results = []
         path = args.path_all_files

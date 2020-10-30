@@ -190,9 +190,14 @@ if __name__ == '__main__':
     parser.add_argument('--index', default=None, required=True, help='Index to search')
     parser.add_argument('--files', default=None, required=False, nargs=2, help='Paths of the files to compare')
     parser.add_argument('--print', default=False, action='store_true', help='Print TFIDF vectors')
+
+    #Indicates if given a file want to compute all the possibilities
     parser.add_argument('--path_all_files', required=False,  help='Determines if compares all the files')
+
+    #Indicates if there is the possibility of stop
     parser.add_argument('--stop', default=False, action='store_true', required=False,  help='Allows to stop the esecution preserving all the information analyzed')
 
+    #Arguments to check when to print and when to stop
     parser.add_argument('--iter', required=False,  help='The number of Iterations between showing the progress and stop if indicated')
     parser.add_argument('--prog', required=False,  help='How has to increase the progress of the analysis in order to show the total progress and stop if indicated')
 
@@ -205,6 +210,7 @@ if __name__ == '__main__':
     client = Elasticsearch()
 
     if args.files:
+        #Original implementation
         file1 = args.files[0]
         file2 = args.files[1]
 
@@ -212,56 +218,78 @@ if __name__ == '__main__':
         print("Similarity between", file1.split('\\')[-1], "and", file2.split('\\')[-1], " --> ", similarity)
     
     elif args.path_all_files:
-        
+        #Check that args.iter or args.prog has a value, exactly one of them
         if ((args.iter or not args.prog) and (not args.iter or args.prog)):
             raise Exception( 
                 "usage: TFIDFViewer.py [-h] --index INDEX [--files FILES FILES] [--print] [--path_all_files PATH_ALL_FILES] [--stop] --iter ITER --prog PROG\n \
                 Indicate ITER or PROG values, only one of them" )
 
+
         all_results = []
         path = args.path_all_files
 
         all_files = []
+        #We collect the name of each single file
         for (_,_,filenames) in os.walk(path):
             all_files += filenames
+        #This is a counter, where when file2 reach the number len(all_files) then file1 will increase by one, and file2 will be set to file1+1
         file1 = 0
         file2 = 1
         p_pre = 0
+        #computes all the possibilities by a binomial formula, in order to check the total process
         binom = np.math.factorial(len(all_files))/(np.math.factorial(len(all_files) - 2)*2)
         print("Analizing {} files with {} possibilities...".format(len(all_files), binom ) )
+        #While there is still some combination left
         while file1 != file2:
+            #complete the path for both files
             file1_path = path + '/' + all_files[file1]
             file2_path = path + '/' + all_files[file2]
 
+            #pick up the name of the files
             name_file1 = file1_path.split('/')[-1]
             name_file2 = file2_path.split('/')[-1]
 
+            #analyses the similarity
             similarity = analyse_files(client, index, file1_path, file2_path, args.print)
+
+            #stores the result
             all_results.append((name_file1, name_file2, similarity))
+
+            #goes to the nexcombination
             file2 += 1
+
+            #if the progress has been of --iter iterations or prog probability is set as true we check if we print the progress and stop
             if args.prog != None or file2 % int(args.iter) == 0:
+                #total progress
                 p = (  np.round((file1*len(all_files) + file2), 2)  / binom )*50
+                #the progress that has been done since the las print
                 diff = p - p_pre
                 cond = True
+                #if prog is set as true we check that the progress made is greater or equal than prog
                 if args.prog != None:
                     cond = diff > float(args.prog)
+                #if is greater or  equal we print the progress
                 if cond:
                     p_pre = p
                     print("Progress", p, "%")
+                    #if we want the possibility of stop we check for an answer
                     if args.stop:
                         print("Stop and print all processed information?  Yes/No")
                         R = input()
                         while R != "Yes" and R != "No":
                             print("Introduce Correct Input Yes/No")
                             R = input()
+                        #if yes we end the while loop and print all results
                         if R == "Yes":
                             break
+            
             if len(all_files) == file2:
                 file1 += 1
                 file2 = file1
                 if file2 < len(all_files) - 1:
                     file2 += 1
 
+        #we print all the information
         print('Printing information in results.txt...')
         fil = open("results_{}.txt".format(index), "w")
         for (f1, f2, sim) in sorted(all_results, key = lambda x : x[2], reverse=True):

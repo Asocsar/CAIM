@@ -19,12 +19,7 @@ IndexFiles
 
     https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis.html
 
-:Authors:
-    bejar
 
-:Version: 
-
-:Date:  23/06/2017
 """
 
 from elasticsearch import Elasticsearch
@@ -56,7 +51,14 @@ def generate_files_list(path):
     return lfiles
 
 
+
 def generate_index(index, ldocs, token, filters, all_pos):
+    """
+    Generates a index given a name for the index, a set of documents, a posible token, a filter and in case
+    that all_pos is true it prints some information in order to visualize the process
+    :param index, ldocs, toke, filters, all_pos:
+    :return nothing, only generates an index:
+    """
 
     if all_pos:
         print("GENERATING INDEX...", index)
@@ -104,6 +106,12 @@ def generate_index(index, ldocs, token, filters, all_pos):
     
     
 def plot_data(all_words_data, title):
+    """
+    Plot a file with the strucutre (DocumentName, Number) in a a bar plot for example in order to see the  
+    maximum frequency or amount of words
+    :param path:
+    :return:
+    """
     type_an = np.array([x.split(',')[0] for x in all_words_data])
     words_cant = np.array([int(x.split(',')[1].split(' ')[1]) for x in all_words_data])
 
@@ -154,31 +162,38 @@ if __name__ == '__main__':
         # Insert operation for a document with fields' path' and 'text'
         ldocs.append({'_op_type': 'index', '_index': index, 'path': f, 'text': text})
     
+    #check if we want to compute all the possibilities (this is a lite version in order to speed-up the program)
     if args.all_posibilities:
         all_filters = ['lowercase', 'asciifolding', 'stop', 'stemmer', 'porter_stem', 'kstem', 'snowball']
         for tok in ['standard', 'whitespace', 'classic', 'letter']:
             for filt_select in all_filters:
+                #creates a new name indicating which filters have been used and which token has been used
                 index_in = index + '_' + tok + '_' + filt_select
+                #changes the index for all the documents
                 ldocs_mod = [{'_op_type' : L['_op_type'], '_index': index_in, 'path': L['path'], 'text': L['text']} for L in ldocs]
+                #generate the index
                 generate_index(index_in, ldocs_mod, tok, filt_select, True)
                 print("END OF GENERATING INDEX...", index_in)
+                #call COuntWords to analyze the frequences and the number of word, maximum rec, and store it all into a file
                 CountWords.analyze_index(index_in, False)
-        
+
         all_words = open('countWords_all.txt', 'r')
         all_words_data = all_words.readlines()
         all_words.close()
 
+        #print the bar for the number of different words
         plot_data(all_words_data, "Number of words")
 
         all_words = open('countWords_max.txt', 'r')
         all_words_data = all_words.readlines()
         all_words.close()
-        
+        #print the bar for the number of Maximum Frec
         plot_data(all_words_data, "MaximumFrec")
         
 
 
     else:
+        #original implementation
         generate_index(index, ldocs, args.token, args.filter, False)
 
 

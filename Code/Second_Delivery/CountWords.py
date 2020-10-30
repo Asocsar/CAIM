@@ -8,12 +8,7 @@ CountWords
 
     Generates a list with the counts and the words in the 'text' field of the documents in an index
 
-:Authors: bejar
     
-
-:Version: 
-
-:Created on: 04/07/2017 11:58 
 
 """
 
@@ -26,6 +21,11 @@ import numpy as np
 import argparse
 
 def analyze_index(index, alpha):
+    """
+    Given an index and a parameter Alpha indicating if it's ordered in Alphabetical order or not analyzes the index
+    :param index, alpha:
+    :return:
+    """
     print("ANALYZING INDEX", index)
     try:
         client = Elasticsearch()

@@ -22,8 +22,11 @@ class Airport:
 
 airportList = [] # list of Airport
 airportHash = dict() # hash key IATA code -> Airport
-
 sink_nodes = 0
+L = 0.85
+dumping_factors = np.linspace(0.8, 0.9, 10)
+outp = open('output.txt', 'w')
+times_out = open('times.txt', 'w')
 
 def readAirports(fd):
     print("Reading Airport file from {0}".format(fd))
@@ -96,7 +99,7 @@ def computePageRanks():
     
     N = len(airportHash)
     P = {K:1/N for K in airportHash}
-    L = 0.80
+    global L
 
     stop_condition = False
     iterations = 0
@@ -112,7 +115,7 @@ def computePageRanks():
         
 
         out_prob = (1-L)/N + nout*out_prob
-        stop_condition = all([abs(X-Y) <= 1*10**(-15) for (X,Y) in zip(list(P.values()), list(Q.values()))])
+        stop_condition = all([abs(X-Y) <= 1*10**(-12) for (X,Y) in zip(list(P.values()), list(Q.values()))])
         P = Q
         iterations += 1
 
@@ -120,21 +123,37 @@ def computePageRanks():
     
 
 def outputPageRanks(pagerank):
-    
+    global L
+    outp.write('Dumping Factor {}\n\n'.format(L))
+    outp.write('*------------------------------*\n')
+    outp.write('*------------------------------*\n')
+    outp.write('*------------------------------*\n')
     for City in pagerank:
         print("The final score for {} is {}".format(City, pagerank[City]))
-    
-    print("Total probability {}".format( sum(list(pagerank.values()))) )
+        outp.write("The final score for {} is {}\n".format(City, pagerank[City]))
+    print(len(pagerank))
+    print("Total probability {}".format( sum(list(pagerank.values()))))
+    outp.write('*------------------------------*\n')
+    outp.write("\n\nTotal probability {}\n\n".format( sum(list(pagerank.values()))))
+    outp.write('*------------------------------*\n')
 
 def main(argv=None):
     readAirports("airports.txt")
     readRoutes("routes.txt")
-    time1 = time.time()
-    (pagerank, iterations) = computePageRanks()
-    time2 = time.time()
-    outputPageRanks(pagerank)
-    print("#Iterations:", iterations)
-    print("Time of computePageRanks():", time2-time1)
+    global L
+    for L_in in dumping_factors:
+        L = L_in
+        time1 = time.time()
+        (pagerank, iterations) = computePageRanks()
+        time2 = time.time()
+        outputPageRanks(pagerank)
+        print("#Iterations:", iterations)
+        print("Time of computePageRanks():", time2-time1)
+        times_out.write("Time of computePageRanks(): {}\n".format(time2-time1))
+    
+    times_out.close()
+    outp.close()
+
 
 
 

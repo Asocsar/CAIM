@@ -41,6 +41,7 @@ if __name__ == '__main__':
 
     # Copies the initial prototypes
     cwd = os.getcwd()
+    print(cwd)
     shutil.copy(cwd + '/' + args.prot, cwd + '/prototypes0.txt')
 
     nomove = False  # Stores if there has been changes in the current iteration
@@ -54,6 +55,7 @@ if __name__ == '__main__':
         mr_job1 = MRKmeansStep(args=['-r', 'local', args.docs,
                                      '--file', cwd + '/prototypes%d.txt' % i,
                                      '--prot', cwd + '/prototypes%d.txt' % i,
+                                     '--vocab', cwd + '/vocabulary.txt',
                                      '--num-cores', str(args.ncores)])
 
         # Runs the script
@@ -62,19 +64,43 @@ if __name__ == '__main__':
             new_assign = {}
             new_proto = {}
             # Process the results of the script iterating the (key,value) pairs
-            for key, value in mr_job1.parse_output(runner1.cat_output()):
-                eprint("AQUI ---->", key, value)
+            for cluster, vector in mr_job1.parse_output(runner1.cat_output()):
+                #print(vector)
+                new_assign[cluster] = vector[0]
+                new_proto[cluster] = vector[1]
                 # You should store things here probably in a datastructure
 
+            nomove = (new_assign == assign)
+            assign = new_assign
+
             # If your scripts returns the new assignments you could write them in a file here
+            f = open(cwd + '/assign%d.txt' % i, 'w')
+            for k in sorted(new_assign):
+                f.write('Cluster {}:'.format(k))
+                for doc in new_assign[k]:
+                    f.write('\t File {}\n'.format(doc))
+            f.close()
 
             # You should store the new prototypes here for the next iteration
-
+            f = open(cwd + '/prototypes%d.txt' % (i+1), 'w')
+            for k in sorted(new_proto):
+                S = k + ':'
+                for (word,weight) in new_proto[k]:
+                    S += word + '+' + str(weight) + ' '
+                f.write(S[:-1] + '\r\n')
+            f.close()
             # If you have saved the assignments, you can check if they have changed from the previous iteration
 
         print("Time= {} seconds".format((time.time() - tinit)))
 
-        if nomove:  # If there is no changes in two consecutive iteration we can stop
+        if args.iter == i or nomove:  # If there is no changes in two consecutive iteration we can stop
+            f = open(cwd + '/prototypes_final.txt', 'w')
+            for k in sorted(new_proto):
+                S = k + ':'
+                for (word,weight) in new_proto[k]:
+                    S += word + '+' + str(weight) + ' '
+                f.write(S[:-1] + '\r\n')
+            f.close()
             print("Algorithm converged")
             break
 

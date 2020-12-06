@@ -23,8 +23,6 @@ from elasticsearch.exceptions import NotFoundError
 
 import argparse
 
-__author__ = 'bejar'
-
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--index', default=None, required=True, help='Index to search')
@@ -35,7 +33,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     index = args.index
-    minfreq = args.minfreq
+    minfreq =  args.minfreq
     maxfreq = args.maxfreq
     numwords = args.numwords
 

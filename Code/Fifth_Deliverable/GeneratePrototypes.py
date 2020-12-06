@@ -33,9 +33,7 @@ if __name__ == '__main__':
 
     ldocs = []
     for line in f:
-        line = line.split(':')
-        doc = line[0] 
-        words = line[1]
+        doc, words = line.split(':')
         ldocs.append(words)
 
    # Generate nclust prototypes with nclust random documents
@@ -48,4 +46,3 @@ if __name__ == '__main__':
         f.write('CLASS'+str(i) + ':' + docvec.encode('ascii','replace').decode() + '\n')
     f.flush()
     f.close()
-

@@ -33,8 +33,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--prot', default='prototypes.txt', help='Initial prototpes file')
     parser.add_argument('--docs', default='documents.txt', help='Documents data')
-    parser.add_argument('--iter', default=5, type=int, help='Number of iterations')
-    parser.add_argument('--ncores', default=2, type=int, help='Number of parallel processes to use')
+    parser.add_argument('--iter', default=20, type=int, help='Number of iterations')
+    parser.add_argument('--ncores', default=4, type=int, help='Number of parallel processes to use')
 
     args = parser.parse_args()
     assign = {}
@@ -55,7 +55,7 @@ if __name__ == '__main__':
         mr_job1 = MRKmeansStep(args=['-r', 'local', args.docs,
                                      '--file', cwd + '/prototypes%d.txt' % i,
                                      '--prot', cwd + '/prototypes%d.txt' % i,
-                                     '--vocab', cwd + '/vocabulary.txt',
+                                     #'--vocab', cwd + '/vocabulary.txt',
                                      '--num-cores', str(args.ncores)])
 
         # Runs the script
@@ -70,12 +70,14 @@ if __name__ == '__main__':
                 new_proto[cluster] = vector[1]
                 # You should store things here probably in a datastructure
 
-            nomove = (new_assign == assign)
+            list_1 = sorted(list(new_assign.values()))
+            list_2 = sorted(list(assign.values()))
+            nomove = (list_1 == list_2)
             assign = new_assign
 
             # If your scripts returns the new assignments you could write them in a file here
             f = open(cwd + '/assign%d.txt' % i, 'w')
-            for k in sorted(new_assign):
+            for k in new_assign:
                 f.write('Cluster {}:'.format(k))
                 for doc in new_assign[k]:
                     f.write('\t File {}\n'.format(doc))
@@ -83,7 +85,7 @@ if __name__ == '__main__':
 
             # You should store the new prototypes here for the next iteration
             f = open(cwd + '/prototypes%d.txt' % (i+1), 'w')
-            for k in sorted(new_proto):
+            for k in new_proto:
                 S = k + ':'
                 for (word,weight) in new_proto[k]:
                     S += word + '+' + str(weight) + ' '
@@ -93,9 +95,9 @@ if __name__ == '__main__':
 
         print("Time= {} seconds".format((time.time() - tinit)))
 
-        if args.iter == i or nomove:  # If there is no changes in two consecutive iteration we can stop
+        if args.iter-1 == i or nomove:  # If there is no changes in two consecutive iteration we can stop
             f = open(cwd + '/prototypes_final.txt', 'w')
-            for k in sorted(new_proto):
+            for k in new_proto:
                 S = k + ':'
                 for (word,weight) in new_proto[k]:
                     S += word + '+' + str(weight) + ' '

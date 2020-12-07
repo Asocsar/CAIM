@@ -29,7 +29,6 @@ def eprint(*args, **kwargs):
 
 class MRKmeansStep(MRJob):
     prototypes = {}
-    weights_doc = {}
     
 
     def jaccard(self, prot, doc):
@@ -43,20 +42,42 @@ class MRKmeansStep(MRJob):
         """
         
         
-        cross = 0
+        '''cross = 0
         sqn1 = 0
         sqn2 = 0
-        #weights_doc = {k:1 for k in doc}
+                                
         
-        #After analyzing the code I realize that all values are 1, therefore                               
-        
-        '''cross = sum([p*self.weights_doc[w] for (w,p) in prot if w in doc])
-        sqn1 = sum([self.weights_doc[x]**2 for x in doc])
-        sqn2 = sum([x**2 for (_,x) in prot])'''
+        i, j = (0,0)
 
-        cross = sum([1 for w in prot if w in doc])
+        while i < len(prot) and j < len(doc):
+            if prot[i][0] == doc[j]:
+                cross = cross + prot[i][1]
+                sqn1 += prot[i][1]**2
+                sqn2 += 1
+                i += 1
+                j += 1
+
+            elif prot[i][0] < doc[j]:
+                sqn1 += prot[i][1]**2
+                i += 1
+            
+            elif prot[i][0] > doc[j]:
+                sqn2 += 1
+                j += 1
+        
+        
+        while i < len(prot):
+            sqn1 += prot[i][1]**2
+            i += 1
+        
+        while j < len(doc):
+            sqn2 += 1
+            j+= 1'''
+        
+
+        cross = sum([p for (w,p) in prot if w in doc])
         sqn1 = sum([1 for _ in doc])
-        sqn2 = sum([1 for _ in prot])
+        sqn2 = sum([x**2 for (_,x) in prot])
 
         return cross / (sqn1 + sqn2 - cross)
 
@@ -68,7 +89,6 @@ class MRKmeansStep(MRJob):
         """
         super(MRKmeansStep, self).configure_args()
         self.add_file_arg('--prot')
-        self.add_file_arg('--vocab')
 
     def load_data(self):
         """
@@ -83,19 +103,7 @@ class MRKmeansStep(MRJob):
             for word in words.split():
                 cp.append((word.split('+')[0], float(word.split('+')[1])))
             self.prototypes[cluster] = cp
-        
-        f.close()
-        
-        f = open(self.options.vocab, 'r', encoding='utf8')
-        maxfr = 0
-        for line in f:
-            word, frec = line.split()
-            self.weights_doc[word] = float(frec)
-            if float(frec) > maxfr:
-                maxfr = float(frec)
-        
-        #self.weights_doc = {k:self.weights_doc[k]/maxfr for k in self.weights_doc}
-        self.weights_doc = {k:1 for k in self.weights_doc}
+
         f.close()
 
 
@@ -111,15 +119,13 @@ class MRKmeansStep(MRJob):
         """
 
         # Each line is a string docid:wor1 word2 ... wordn
-        line_aux = line.split(':')
-        doc = line_aux[0] 
-        words = line_aux[1]
+        doc, words = line.split(':')
         lwords = words.split()
         #
         # Compute map here
         #
         minDistance = -1
-        assignedPrototype = 'none'
+        assignedPrototype = ''
         for k in self.prototypes:
             distance = self.jaccard(self.prototypes[k], lwords)
             if minDistance == -1 or distance < minDistance:
@@ -147,8 +153,8 @@ class MRKmeansStep(MRJob):
         :param values:
         :return:
         """
-        frequencyWords = {}
         documents = []
+        frequencyWords = {}
         for (doc, words) in values:
             documents.append(doc)
             for word in words:
@@ -157,8 +163,7 @@ class MRKmeansStep(MRJob):
                 else:
                     frequencyWords[word] = 1
         
-        newPrototype = list(sorted([(word, frequencyWords[word]/len(frequencyWords)) for word in frequencyWords], key=lambda x: x[0]))
-        
+        newPrototype = list(sorted([(word, frequencyWords[word]/len(documents)) for word in frequencyWords], key=lambda x: x[1]))
         yield key, (sorted(documents), newPrototype)
 
     def steps(self):

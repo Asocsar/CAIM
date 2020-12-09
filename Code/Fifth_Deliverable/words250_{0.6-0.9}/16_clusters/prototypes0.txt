@@ -1,0 +1,16 @@
+CLASS0:use+1.0 which+1.0 
+CLASS1:use+1.0 which+1.0 
+CLASS2:from+1.0 use+1.0 which+1.0 
+CLASS3:from+1.0 
+CLASS4:from+1.0 use+1.0 
+CLASS5:from+1.0 use+1.0 which+1.0 
+CLASS6:from+1.0 use+1.0 which+1.0 
+CLASS7:use+1.0 which+1.0 
+CLASS8:from+1.0 
+CLASS9:use+1.0 
+CLASS10:from+1.0 use+1.0 which+1.0 
+CLASS11:from+1.0 use+1.0 which+1.0 
+CLASS12:use+1.0 which+1.0 
+CLASS13:use+1.0 which+1.0 
+CLASS14:from+1.0 use+1.0 which+1.0 
+CLASS15:from+1.0 use+1.0 which+1.0 

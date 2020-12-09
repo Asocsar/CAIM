@@ -1,0 +1,6 @@
+/home/daniel/Desktop/CAIM/CAIM/Code/Fifth_Deliverable/words250_{0.6-0.9}
+Iteration 1 ...
+Time= 1.9372460842132568 seconds
+Iteration 2 ...
+Time= 1.864757776260376 seconds
+Algorithm converged

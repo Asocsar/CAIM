@@ -1,0 +1,2 @@
+CLASS0:also+1.0 can+1.0 differ+1.0 have+1.0 result+1.0 show+1.0 
+CLASS1:differ+1.0 has+1.0 high+1.0 model+1.0 more+1.0 observ+1.0 one+1.0 our+1.0 show+1.0 time+1.0 

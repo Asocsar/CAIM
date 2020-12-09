@@ -77,7 +77,7 @@ if __name__ == '__main__':
 
             # If your scripts returns the new assignments you could write them in a file here
             f = open(cwd + '/assign%d.txt' % i, 'w')
-            for k in new_assign:
+            for k in sorted(new_assign):
                 f.write('Cluster {}:'.format(k))
                 for doc in new_assign[k]:
                     f.write('\t File {}\n'.format(doc))
@@ -85,7 +85,7 @@ if __name__ == '__main__':
 
             # You should store the new prototypes here for the next iteration
             f = open(cwd + '/prototypes%d.txt' % (i+1), 'w')
-            for k in new_proto:
+            for k in sorted(new_proto):
                 S = k + ':'
                 for (word,weight) in new_proto[k]:
                     S += word + '+' + str(weight) + ' '
@@ -97,7 +97,7 @@ if __name__ == '__main__':
 
         if args.iter-1 == i or nomove:  # If there is no changes in two consecutive iteration we can stop
             f = open(cwd + '/prototypes_final.txt', 'w')
-            for k in new_proto:
+            for k in sorted(new_proto):
                 S = k + ':'
                 for (word,weight) in new_proto[k]:
                     S += word + '+' + str(weight) + ' '

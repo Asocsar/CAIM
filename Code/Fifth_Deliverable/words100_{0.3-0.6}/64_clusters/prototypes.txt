@@ -1,0 +1,64 @@
+CLASS0:base+1.0 between+1.0 data+1.0 first+1.0 has+1.0 have+1.0 high+1.0 it+1.0 larg+1.0 model+1.0 one+1.0 our+1.0 present+1.0 propos+1.0 provid+1.0 show+1.0 system+1.0 
+CLASS1:base+1.0 can+1.0 high+1.0 larg+1.0 method+1.0 model+1.0 observ+1.0 our+1.0 present+1.0 result+1.0 show+1.0 studi+1.0 
+CLASS2:also+1.0 find+1.0 high+1.0 it+1.0 model+1.0 observ+1.0 our+1.0 present+1.0 result+1.0 show+1.0 studi+1.0 system+1.0 than+1.0 time+1.0 
+CLASS3:base+1.0 both+1.0 can+1.0 first+1.0 method+1.0 model+1.0 observ+1.0 propos+1.0 result+1.0 show+1.0 studi+1.0 system+1.0 
+CLASS4:also+1.0 can+1.0 effect+1.0 high+1.0 model+1.0 observ+1.0 one+1.0 paper+1.0 result+1.0 show+1.0 system+1.0 time+1.0 two+1.0 
+CLASS5:also+1.0 first+1.0 it+1.0 paper+1.0 propos+1.0 provid+1.0 result+1.0 show+1.0 studi+1.0 
+CLASS6:between+1.0 both+1.0 data+1.0 effect+1.0 it+1.0 method+1.0 model+1.0 more+1.0 propos+1.0 studi+1.0 than+1.0 
+CLASS7:also+1.0 differ+1.0 effect+1.0 find+1.0 have+1.0 more+1.0 observ+1.0 one+1.0 our+1.0 result+1.0 show+1.0 than+1.0 two+1.0 
+CLASS8:can+1.0 data+1.0 first+1.0 has+1.0 have+1.0 it+1.0 method+1.0 model+1.0 paper+1.0 present+1.0 propos+1.0 result+1.0 show+1.0 studi+1.0 than+1.0 time+1.0 
+CLASS9:both+1.0 can+1.0 data+1.0 have+1.0 model+1.0 our+1.0 provid+1.0 result+1.0 studi+1.0 time+1.0 
+CLASS10:model+1.0 more+1.0 one+1.0 our+1.0 provid+1.0 result+1.0 studi+1.0 
+CLASS11:base+1.0 between+1.0 both+1.0 differ+1.0 has+1.0 have+1.0 high+1.0 observ+1.0 our+1.0 present+1.0 studi+1.0 system+1.0 two+1.0 
+CLASS12:can+1.0 differ+1.0 effect+1.0 it+1.0 model+1.0 one+1.0 system+1.0 time+1.0 
+CLASS13:between+1.0 both+1.0 effect+1.0 find+1.0 has+1.0 high+1.0 model+1.0 observ+1.0 paper+1.0 present+1.0 result+1.0 studi+1.0 system+1.0 than+1.0 
+CLASS14:also+1.0 can+1.0 data+1.0 differ+1.0 find+1.0 have+1.0 it+1.0 method+1.0 our+1.0 paper+1.0 present+1.0 propos+1.0 show+1.0 studi+1.0 system+1.0 than+1.0 two+1.0 
+CLASS15:also+1.0 data+1.0 effect+1.0 find+1.0 first+1.0 it+1.0 more+1.0 one+1.0 our+1.0 result+1.0 show+1.0 studi+1.0 time+1.0 
+CLASS16:can+1.0 find+1.0 first+1.0 has+1.0 it+1.0 one+1.0 paper+1.0 provid+1.0 show+1.0 studi+1.0 two+1.0 
+CLASS17:differ+1.0 first+1.0 have+1.0 it+1.0 result+1.0 two+1.0 
+CLASS18:can+1.0 differ+1.0 find+1.0 have+1.0 high+1.0 method+1.0 model+1.0 our+1.0 
+CLASS19:base+1.0 both+1.0 can+1.0 has+1.0 high+1.0 larg+1.0 our+1.0 paper+1.0 result+1.0 system+1.0 time+1.0 
+CLASS20:can+1.0 first+1.0 has+1.0 high+1.0 model+1.0 more+1.0 paper+1.0 studi+1.0 time+1.0 
+CLASS21:data+1.0 effect+1.0 find+1.0 high+1.0 it+1.0 observ+1.0 our+1.0 present+1.0 system+1.0 time+1.0 
+CLASS22:first+1.0 our+1.0 propos+1.0 system+1.0 time+1.0 
+CLASS23:also+1.0 can+1.0 data+1.0 first+1.0 has+1.0 one+1.0 our+1.0 paper+1.0 provid+1.0 result+1.0 show+1.0 studi+1.0 system+1.0 than+1.0 two+1.0 
+CLASS24:have+1.0 high+1.0 observ+1.0 present+1.0 than+1.0 time+1.0 
+CLASS25:both+1.0 find+1.0 larg+1.0 studi+1.0 than+1.0 time+1.0 two+1.0 
+CLASS26:base+1.0 differ+1.0 find+1.0 first+1.0 high+1.0 larg+1.0 method+1.0 model+1.0 our+1.0 present+1.0 provid+1.0 system+1.0 than+1.0 two+1.0 
+CLASS27:also+1.0 base+1.0 data+1.0 has+1.0 high+1.0 method+1.0 model+1.0 paper+1.0 propos+1.0 provid+1.0 
+CLASS28:also+1.0 between+1.0 both+1.0 data+1.0 differ+1.0 first+1.0 have+1.0 method+1.0 our+1.0 paper+1.0 present+1.0 provid+1.0 result+1.0 studi+1.0 than+1.0 
+CLASS29:also+1.0 both+1.0 effect+1.0 larg+1.0 method+1.0 model+1.0 one+1.0 our+1.0 present+1.0 provid+1.0 result+1.0 show+1.0 
+CLASS30:also+1.0 base+1.0 between+1.0 differ+1.0 find+1.0 first+1.0 provid+1.0 system+1.0 time+1.0 two+1.0 
+CLASS31:base+1.0 differ+1.0 effect+1.0 first+1.0 has+1.0 high+1.0 it+1.0 larg+1.0 our+1.0 show+1.0 
+CLASS32:base+1.0 can+1.0 data+1.0 effect+1.0 have+1.0 larg+1.0 observ+1.0 system+1.0 time+1.0 
+CLASS33:base+1.0 between+1.0 data+1.0 effect+1.0 method+1.0 model+1.0 more+1.0 observ+1.0 our+1.0 propos+1.0 result+1.0 
+CLASS34:base+1.0 between+1.0 can+1.0 find+1.0 first+1.0 larg+1.0 one+1.0 our+1.0 paper+1.0 provid+1.0 result+1.0 show+1.0 studi+1.0 two+1.0 
+CLASS35:both+1.0 can+1.0 has+1.0 have+1.0 our+1.0 paper+1.0 present+1.0 propos+1.0 studi+1.0 system+1.0 than+1.0 time+1.0 two+1.0 
+CLASS36:data+1.0 differ+1.0 effect+1.0 first+1.0 has+1.0 high+1.0 method+1.0 our+1.0 present+1.0 provid+1.0 studi+1.0 time+1.0 two+1.0 
+CLASS37:also+1.0 between+1.0 effect+1.0 find+1.0 has+1.0 larg+1.0 our+1.0 studi+1.0 
+CLASS38:also+1.0 base+1.0 between+1.0 differ+1.0 have+1.0 observ+1.0 one+1.0 present+1.0 show+1.0 time+1.0 two+1.0 
+CLASS39:data+1.0 has+1.0 it+1.0 larg+1.0 one+1.0 our+1.0 propos+1.0 provid+1.0 result+1.0 show+1.0 time+1.0 two+1.0 
+CLASS40:differ+1.0 find+1.0 has+1.0 high+1.0 model+1.0 observ+1.0 our+1.0 result+1.0 studi+1.0 two+1.0 
+CLASS41:can+1.0 find+1.0 have+1.0 our+1.0 provid+1.0 show+1.0 studi+1.0 system+1.0 
+CLASS42:also+1.0 between+1.0 can+1.0 has+1.0 high+1.0 it+1.0 model+1.0 more+1.0 our+1.0 paper+1.0 show+1.0 studi+1.0 
+CLASS43:also+1.0 between+1.0 differ+1.0 effect+1.0 model+1.0 observ+1.0 one+1.0 show+1.0 studi+1.0 system+1.0 
+CLASS44:differ+1.0 effect+1.0 has+1.0 have+1.0 high+1.0 present+1.0 result+1.0 studi+1.0 time+1.0 two+1.0 
+CLASS45:also+1.0 can+1.0 has+1.0 method+1.0 one+1.0 paper+1.0 result+1.0 show+1.0 
+CLASS46:between+1.0 can+1.0 differ+1.0 model+1.0 observ+1.0 one+1.0 our+1.0 propos+1.0 show+1.0 studi+1.0 system+1.0 
+CLASS47:also+1.0 has+1.0 have+1.0 method+1.0 paper+1.0 present+1.0 provid+1.0 result+1.0 show+1.0 studi+1.0 
+CLASS48:between+1.0 find+1.0 have+1.0 larg+1.0 one+1.0 our+1.0 propos+1.0 provid+1.0 show+1.0 time+1.0 
+CLASS49:base+1.0 can+1.0 data+1.0 method+1.0 model+1.0 our+1.0 paper+1.0 provid+1.0 result+1.0 show+1.0 studi+1.0 time+1.0 two+1.0 
+CLASS50:also+1.0 between+1.0 both+1.0 can+1.0 differ+1.0 find+1.0 first+1.0 it+1.0 model+1.0 observ+1.0 one+1.0 result+1.0 studi+1.0 system+1.0 
+CLASS51:between+1.0 has+1.0 our+1.0 paper+1.0 result+1.0 show+1.0 studi+1.0 two+1.0 
+CLASS52:also+1.0 base+1.0 both+1.0 can+1.0 data+1.0 have+1.0 high+1.0 larg+1.0 method+1.0 model+1.0 one+1.0 result+1.0 show+1.0 system+1.0 
+CLASS53:can+1.0 data+1.0 differ+1.0 larg+1.0 model+1.0 observ+1.0 propos+1.0 show+1.0 than+1.0 time+1.0 
+CLASS54:between+1.0 data+1.0 find+1.0 first+1.0 method+1.0 observ+1.0 one+1.0 present+1.0 result+1.0 show+1.0 system+1.0 than+1.0 
+CLASS55:also+1.0 between+1.0 can+1.0 it+1.0 larg+1.0 observ+1.0 present+1.0 provid+1.0 result+1.0 time+1.0 
+CLASS56:base+1.0 can+1.0 find+1.0 have+1.0 high+1.0 model+1.0 more+1.0 observ+1.0 provid+1.0 result+1.0 than+1.0 time+1.0 
+CLASS57:also+1.0 base+1.0 find+1.0 first+1.0 have+1.0 larg+1.0 more+1.0 our+1.0 present+1.0 result+1.0 studi+1.0 than+1.0 
+CLASS58:have+1.0 larg+1.0 more+1.0 one+1.0 our+1.0 provid+1.0 studi+1.0 than+1.0 time+1.0 
+CLASS59:base+1.0 between+1.0 can+1.0 effect+1.0 have+1.0 model+1.0 one+1.0 propos+1.0 provid+1.0 system+1.0 time+1.0 
+CLASS60:also+1.0 both+1.0 differ+1.0 find+1.0 model+1.0 than+1.0 time+1.0 
+CLASS61:between+1.0 data+1.0 differ+1.0 first+1.0 high+1.0 larg+1.0 observ+1.0 propos+1.0 provid+1.0 studi+1.0 
+CLASS62:also+1.0 base+1.0 data+1.0 effect+1.0 find+1.0 has+1.0 have+1.0 more+1.0 one+1.0 our+1.0 paper+1.0 provid+1.0 result+1.0 studi+1.0 two+1.0 
+CLASS63:base+1.0 both+1.0 can+1.0 find+1.0 have+1.0 observ+1.0 show+1.0 studi+1.0 

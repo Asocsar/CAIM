@@ -1,0 +1,4 @@
+CLASS0:can+1.0 differ+1.0 effect+1.0 find+1.0 larg+1.0 one+1.0 our+1.0 show+1.0 system+1.0 
+CLASS1:base+1.0 between+1.0 both+1.0 can+1.0 has+1.0 larg+1.0 propos+1.0 result+1.0 system+1.0 
+CLASS2:also+1.0 both+1.0 can+1.0 data+1.0 effect+1.0 larg+1.0 result+1.0 studi+1.0 
+CLASS3:base+1.0 both+1.0 effect+1.0 it+1.0 observ+1.0 present+1.0 two+1.0 

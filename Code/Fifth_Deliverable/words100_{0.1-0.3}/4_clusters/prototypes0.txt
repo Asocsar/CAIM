@@ -1,0 +1,4 @@
+CLASS0:applic+1.0 compar+1.0 depend+1.0 deriv+1.0 effici+1.0 energi+1.0 field+1.0 function+1.0 includ+1.0 measur+1.0 non+1.0 number+1.0 particular+1.0 perform+1.0 predict+1.0 properti+1.0 requir+1.0 structur+1.0 work+1.0 
+CLASS1:appli+1.0 consist+1.0 dynam+1.0 energi+1.0 exist+1.0 inform+1.0 most+1.0 new+1.0 other+1.0 previous+1.0 process+1.0 properti+1.0 relat+1.0 space+1.0 
+CLASS2:comput+1.0 consid+1.0 consist+1.0 direct+1.0 field+1.0 form+1.0 general+1.0 generat+1.0 here+1.0 non+1.0 perform+1.0 recent+1.0 requir+1.0 space+1.0 structur+1.0 theori+1.0 valu+1.0 where+1.0 while+1.0 
+CLASS3:all+1.0 ani+1.0 been+1.0 case+1.0 comput+1.0 consid+1.0 general+1.0 includ+1.0 mani+1.0 new+1.0 order+1.0 properti+1.0 set+1.0 sever+1.0 some+1.0 theori+1.0 under+1.0 
